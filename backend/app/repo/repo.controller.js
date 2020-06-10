@@ -18,7 +18,17 @@ const getCommits = async (req, res) => {
   });
 };
 
+const getAuthors = async (req, res) => {
+  const {user, repo} = req.params;
+  const data = await github.getAuthors(user, repo);
+
+  res.success({
+    data
+  });
+};
+
 module.exports = {
   getRepo,
   getCommits,
+  getAuthors,
 };

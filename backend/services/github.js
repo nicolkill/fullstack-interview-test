@@ -40,7 +40,23 @@ const getCommits = async (user, repo) => {
   }));
 };
 
+const getAuthors = async (user, repo) => {
+  const data = await instance.request({
+    url: `repos/${user}/${repo}/collaborators`,
+    method: 'get',
+  });
+
+  return data.data.map(e => ({
+    sha: e.sha,
+    node_id: e.node_id,
+    commit: e.commit,
+    author: e.author,
+    parents: e.parents,
+  }));
+};
+
 module.exports = {
   getRepo,
   getCommits,
+  getAuthors,
 };
