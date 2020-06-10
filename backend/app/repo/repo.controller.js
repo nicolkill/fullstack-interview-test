@@ -27,8 +27,18 @@ const getAuthors = async (req, res) => {
   });
 };
 
+const getBranches = async (req, res) => {
+  const {user, repo} = req.params;
+  const data = await github.getBranches(user, repo);
+
+  res.success({
+    data
+  });
+};
+
 module.exports = {
   getRepo,
   getCommits,
   getAuthors,
+  getBranches,
 };

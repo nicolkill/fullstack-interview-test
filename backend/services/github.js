@@ -1,4 +1,5 @@
 const axios = require('axios');
+
 const instance = axios.create({
   timeout: 30000,
   baseURL: 'https://api.github.com',
@@ -42,21 +43,31 @@ const getCommits = async (user, repo) => {
 
 const getAuthors = async (user, repo) => {
   const data = await instance.request({
-    url: `repos/${user}/${repo}/collaborators`,
+    url: `repos/${user}/${repo}/contributors`,
     method: 'get',
   });
 
   return data.data.map(e => ({
-    sha: e.sha,
-    node_id: e.node_id,
-    commit: e.commit,
-    author: e.author,
+    login: e.login,
+    avatar_url: e.avatar_url,
+    html_url: e.html_url,
+    parents: e.parents,
     parents: e.parents,
   }));
+};
+
+const getBranches = async (user, repo) => {
+  const data = await instance.request({
+    url: `repos/${user}/${repo}/branches`,
+    method: 'get',
+  });
+
+  return data.data;
 };
 
 module.exports = {
   getRepo,
   getCommits,
   getAuthors,
+  getBranches,
 };
