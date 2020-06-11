@@ -30,6 +30,13 @@ const dataFilters = {
     author: dataFilters.owner(commit.author),
     parents: commit.parents,
   }),
+  commitComplete: commit => ({
+    commit: commit.commit,
+    author: dataFilters.owner(commit.author),
+    parents: commit.parents,
+    stats: commit.stats,
+    files: commit.files,
+  }),
   branch: branch => ({
     name: branch.name,
     commit: branch.commit,
@@ -46,13 +53,25 @@ const getRepo = async (user, repo) => {
   return dataFilters.repo(data.data);
 };
 
-const getCommits = async (user, repo) => {
+const getCommits = async (user, repo, branch) => {
   const data = await instance.request({
     url: `repos/${user}/${repo}/commits`,
     method: 'get',
+    params: {
+      sha: branch,
+    },
   });
 
   return data.data.map(dataFilters.commit);
+};
+
+const getCommitDetail = async (user, repo, ref) => {
+  const data = await instance.request({
+    url: `repos/${user}/${repo}/commits/${ref}`,
+    method: 'get',
+  });
+
+  return dataFilters.commitComplete(data.data);
 };
 
 const getAuthors = async (user, repo) => {
@@ -76,6 +95,7 @@ const getBranches = async (user, repo) => {
 module.exports = {
   getRepo,
   getCommits,
+  getCommitDetail,
   getAuthors,
   getBranches,
 };

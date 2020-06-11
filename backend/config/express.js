@@ -44,14 +44,16 @@ app.use((req, res, next) => {
       body = {};
     }
 
-    console.log({
-      method: req.method,
-      path: req.path,
-      status: res.statusCode,
-      duration: (Date.now() - now) / 1000,
-      request: req.body,
-      response: body,
-    });
+    if (process.env.NODE_ENV != 'test') {
+      console.log({
+        method: req.method,
+        path: req.path,
+        status: res.statusCode,
+        duration: (Date.now() - now) / 1000,
+        request: req.body,
+        response: body,
+      });
+    }
 
     return oldEnd.apply(res, arguments);
   };
