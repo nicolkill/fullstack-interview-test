@@ -8,22 +8,42 @@ const instance = axios.create({
   }
 });
 
+const dataFilters = {
+  owner: owner => ({
+    login: owner.login,
+    avatar_url: owner.avatar_url,
+    html_url: owner.html_url,
+  }),
+  repo: repo => ({
+    full_name: repo.full_name,
+    owner: dataFilters.owner(repo.owner),
+    html_url: repo.html_url,
+    description: repo.description,
+    stargazers_count: repo.stargazers_count,
+    watchers_count: repo.watchers_count,
+    parent: (repo.parent ? dataFilters.repo(repo.parent) : null),
+  }),
+  commit: commit => ({
+    sha: commit.sha,
+    node_id: commit.node_id,
+    commit: commit.commit,
+    author: dataFilters.owner(commit.author),
+    parents: commit.parents,
+  }),
+  branch: branch => ({
+    name: branch.name,
+    commit: branch.commit,
+    protected: branch.protected
+  }),
+};
+
 const getRepo = async (user, repo) => {
   const data = await instance.request({
     url: `repos/${user}/${repo}`,
     method: 'get',
   });
 
-  const repoData = data.data;
-  return {
-    full_name: repoData.full_name,
-    owner: repoData.owner,
-    html_url: repoData.html_url,
-    description: repoData.description,
-    stargazers_count: repoData.stargazers_count,
-    watchers_count: repoData.watchers_count,
-    parent: repoData.parent,
-  };
+  return dataFilters.repo(data.data);
 };
 
 const getCommits = async (user, repo) => {
@@ -32,13 +52,7 @@ const getCommits = async (user, repo) => {
     method: 'get',
   });
 
-  return data.data.map(e => ({
-    sha: e.sha,
-    node_id: e.node_id,
-    commit: e.commit,
-    author: e.author,
-    parents: e.parents,
-  }));
+  return data.data.map(dataFilters.commit);
 };
 
 const getAuthors = async (user, repo) => {
@@ -47,13 +61,7 @@ const getAuthors = async (user, repo) => {
     method: 'get',
   });
 
-  return data.data.map(e => ({
-    login: e.login,
-    avatar_url: e.avatar_url,
-    html_url: e.html_url,
-    parents: e.parents,
-    parents: e.parents,
-  }));
+  return data.data.map(dataFilters.owner);
 };
 
 const getBranches = async (user, repo) => {
@@ -62,7 +70,7 @@ const getBranches = async (user, repo) => {
     method: 'get',
   });
 
-  return data.data;
+  return data.data.map(dataFilters.branch);
 };
 
 module.exports = {
