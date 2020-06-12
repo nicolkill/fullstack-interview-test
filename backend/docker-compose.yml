@@ -14,6 +14,8 @@ services:
       PORT: 4000
       NODE_ENV: development
 
+      GITHUB_OAUTH_TOKEN: a22bdce924d3ec3772d2265702036d18d18e6f59
+
 networks:
   proxy:
     external: true

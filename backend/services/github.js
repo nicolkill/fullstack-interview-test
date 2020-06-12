@@ -5,6 +5,7 @@ const instance = axios.create({
   baseURL: 'https://api.github.com',
   headers: {
     'Accept': 'application/vnd.github.v3+json',
+    'Authorization': `token ${process.env.GITHUB_OAUTH_TOKEN}`,
   }
 });
 
@@ -25,10 +26,10 @@ const dataFilters = {
   }),
   commit: commit => ({
     sha: commit.sha,
-    node_id: commit.node_id,
     commit: commit.commit,
     author: dataFilters.owner(commit.author),
     parents: commit.parents,
+    html_url: commit.html_url,
   }),
   commitComplete: commit => ({
     commit: commit.commit,
