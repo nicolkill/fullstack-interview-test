@@ -1,0 +1,7 @@
+.collection-item.avatar {
+    min-height: 60px !important;
+}
+
+.tabs {
+    border-bottom: 3px black solid;
+}
