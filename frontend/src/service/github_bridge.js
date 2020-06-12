@@ -45,9 +45,19 @@ const getCommits = async (user, repo, branch) => {
   return data.data;
 };
 
+const getCommitDetail = async (user, repo, sha) => {
+  const data = await instance.request({
+    url: `${user}/${repo}/commits/${sha}`,
+    method: 'get',
+  });
+
+  return data.data;
+};
+
 export default {
   getRepo,
   getAuthors,
   getBranches,
   getCommits,
+  getCommitDetail,
 };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import RepoMenu from './RepoMenu';
 import RepoAuthors from './RepoAuthors';
+import RepoProfile from './RepoProfile';
 
 import bridge from '../../service/github_bridge';
 
@@ -71,20 +72,7 @@ class RepoPage extends Component {
           </div>
 
           <div className="col s12 m6">
-            <div className="card grey darken-4">
-              <div className="card-image">
-                <img src={this.state.repo.owner.avatar_url} alt={`${this.state.repo.owner.login}_img`}/>
-              </div>
-              <div className="card-content white-text">
-                <p>
-                  {this.state.repo.owner.login}
-                </p>
-              </div>
-              <div className="card-action">
-                <a href={this.state.repo.owner.html_url} target="_blank" rel="noopener noreferrer">Ver perfil</a>
-              </div>
-            </div>
-
+            <RepoProfile profile={this.state.repo.owner} />
           </div>
         </div>
 

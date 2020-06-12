@@ -32,9 +32,11 @@ const dataFilters = {
     html_url: commit.html_url,
   }),
   commitComplete: commit => ({
+    sha: commit.sha,
     commit: commit.commit,
     author: dataFilters.owner(commit.author),
     parents: commit.parents,
+    html_url: commit.html_url,
     stats: commit.stats,
     files: commit.files,
   }),

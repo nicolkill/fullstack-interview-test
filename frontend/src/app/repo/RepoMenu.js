@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from "prop-types";
 import { Link, useRouteMatch } from "react-router-dom";
 
-function CustomLink({ label, to }) {
+function CustomLink({ label, to, shouldBeExact }) {
   let match = useRouteMatch({
     path: to,
-    exact: true,
+    exact: shouldBeExact,
   });
 
   return (
@@ -16,7 +16,7 @@ function CustomLink({ label, to }) {
 function RepoMenu({ user, repo }) {
   return (
     <ul className="tabs">
-      <li className="tab col s3"><CustomLink to={`/${user}/${repo}`} label="General" /></li>
+      <li className="tab col s3"><CustomLink to={`/${user}/${repo}`} label="General" shouldBeExact /></li>
       <li className="tab col s3"><CustomLink to={`/${user}/${repo}/commits`} label="Commits" /></li>
       <li className="tab col s3"><CustomLink to={`/${user}/${repo}/pull_requests`} label="Pull Requests" /></li>
     </ul>

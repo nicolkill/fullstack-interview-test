@@ -41,10 +41,6 @@ class RepoCommits extends Component {
     this.getCommits(value);
   };
 
-  handleCommitClicked = (commit) => {
-    console.log(`Commit ${commit.hash} selected`);
-  };
-
   groupBy = key => array =>
     array.reduce(
       (objectsByKeyValue, obj) => ({
@@ -53,6 +49,14 @@ class RepoCommits extends Component {
       }),
       {}
     );
+
+  handleCommitSelection = (sha, event) => {
+    event.preventDefault();
+
+    const {user, repo} = this.props.match.params;
+
+    this.props.history.push(`/${user}/${repo}/commits/${sha}`);
+  };
 
   renderCommitsByDate = (commits) => {
     const {user, repo} = this.props.match.params;
@@ -67,11 +71,15 @@ class RepoCommits extends Component {
           </span>}
           <img src={c.author.avatar_url} alt={`${c.author.login}_img`} className="circle"/>
           <span className="title">
-            <a href={c.html_url} target="_blank" rel="noopener noreferrer">{c.sha}</a>
+            <a href="!#" onClick={this.handleCommitSelection.bind(this, c.sha)}>{c.sha}</a>
           </span>
           <p>
+            {c.commit.message}
+            <br/>
             {c.author.login}
           </p>
+
+          <a href={c.html_url} target="_blank" rel="noopener noreferrer"><i className="material-icons black-text">person</i></a>
         </li>
       );
     });
