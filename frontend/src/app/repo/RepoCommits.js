@@ -73,13 +73,12 @@ class RepoCommits extends Component {
           <span className="title">
             <a href="!#" onClick={this.handleCommitSelection.bind(this, c.sha)}>{c.sha}</a>
           </span>
+          <a href={c.html_url} target="_blank" rel="noopener noreferrer"><i className="material-icons black-text">insert_link</i></a>
           <p>
             {c.commit.message}
             <br/>
             {c.author.login}
           </p>
-
-          <a href={c.html_url} target="_blank" rel="noopener noreferrer"><i className="material-icons black-text">person</i></a>
         </li>
       );
     });
