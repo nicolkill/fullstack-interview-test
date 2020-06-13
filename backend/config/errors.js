@@ -20,8 +20,16 @@ class Base extends Error {
 }
 
 class Conflict extends Base {
-  constructor(code = Code.Conflict, statusCode = 409) {
+  constructor(message) {
     super(code, statusCode);
+    this.message = message;
+  }
+
+  toJSON() {
+    return {
+      code: this.code,
+      message: this.message,
+    };
   }
 }
 

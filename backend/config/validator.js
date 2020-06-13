@@ -30,10 +30,6 @@ const validationFunctions = {
     fn: (value) => !value || value.match(/^[a-zA-Z-,]+(\s{0,1}[a-zA-Z-, ])*$/),
     message: 'is not a name',
   },
-  [ValidationTypes.Nut]: {
-    fn: (value) => !value || value.match(/^[0-9.\-]+$/),
-    message: 'is not a nut format',
-  },
 };
 
 const validate = (params, options) => {
