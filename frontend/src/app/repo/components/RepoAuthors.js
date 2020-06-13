@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 
-import bridge from '../../service/github_bridge';
+import bridge from '../../../service/github_bridge';
 
 class RepoAuthors extends Component {
 

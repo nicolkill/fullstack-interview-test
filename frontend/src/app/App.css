@@ -5,3 +5,6 @@
 .tabs {
     border-bottom: 3px black solid;
 }
+.collection-item.avatar.pull-requests {
+    padding-left: 12px !important;
+}

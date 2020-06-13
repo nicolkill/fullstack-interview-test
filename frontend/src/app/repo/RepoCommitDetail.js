@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
-import RepoMenu from './RepoMenu';
-import RepoProfile from './RepoProfile';
+import RepoMenu from './components/RepoMenu';
+import RepoProfile from './components/RepoProfile';
 
 import bridge from '../../service/github_bridge';
 

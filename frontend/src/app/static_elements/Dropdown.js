@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 class Dropdown extends Component {
 
   componentDidMount() {
-    const elems = document.querySelectorAll('.dropdown-trigger');
+    const elems = document.querySelectorAll(`#${this.props.id}.dropdown-trigger`);
     window.M.Dropdown.init(elems, {});
   }
 
@@ -17,9 +17,10 @@ class Dropdown extends Component {
   render() {
     return (
       <div>
-        <a className="dropdown-trigger btn col s12 grey darken-4" href="!#" data-target="dropdown1">{this.props.text}</a>
-
-        <ul id="dropdown1" className="dropdown-content">
+        <a id={this.props.id} className="dropdown-trigger btn col s12 grey darken-4" href="!#" data-target={`dropdown_${this.props.id}`}>
+          <i className="material-icons right">arrow_drop_down</i>{this.props.text}
+        </a>
+        <ul id={`dropdown_${this.props.id}`} className="dropdown-content">
           {this.props.items.map((item, i) => <li key={i}><a href="#!" className="black-text" onClick={this.handleItemSelection.bind(this, item)}>{item.text}</a></li>)}
         </ul>
       </div>
@@ -28,6 +29,7 @@ class Dropdown extends Component {
 }
 
 Dropdown.propTypes = {
+  id: PropTypes.string,
   text: PropTypes.string.isRequired,
   handleElementSelection: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(
@@ -36,6 +38,10 @@ Dropdown.propTypes = {
       text: PropTypes.string.isRequired,
     }),
   ).isRequired,
+};
+
+Dropdown.defaultProps = {
+  id: 'drop',
 };
 
 export default Dropdown;

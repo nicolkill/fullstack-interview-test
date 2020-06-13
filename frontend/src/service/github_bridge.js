@@ -54,10 +54,56 @@ const getCommitDetail = async (user, repo, sha) => {
   return data.data;
 };
 
+const getPullRequests = async (user, repo) => {
+  const data = await instance.request({
+    url: `${user}/${repo}/pull_requests`,
+    method: 'get',
+  });
+
+  return data.data;
+};
+
+const openPullRequest = async (user, repo, {title, body, head, base}) => {
+  const data = await instance.request({
+    url: `${user}/${repo}/pull_requests`,
+    method: 'post',
+    data: {
+      title,
+      body,
+      head,
+      base,
+    },
+  });
+
+  return data.data;
+};
+
+const mergePullRequest = async (user, repo, number) => {
+  const data = await instance.request({
+    url: `${user}/${repo}/pull_requests/${number}`,
+    method: 'put',
+  });
+
+  return data.data;
+};
+
+const closePullRequest = async (user, repo, number) => {
+  const data = await instance.request({
+    url: `${user}/${repo}/pull_requests/${number}`,
+    method: 'delete',
+  });
+
+  return data.data;
+};
+
 export default {
   getRepo,
   getAuthors,
   getBranches,
   getCommits,
   getCommitDetail,
+  getPullRequests,
+  openPullRequest,
+  mergePullRequest,
+  closePullRequest,
 };

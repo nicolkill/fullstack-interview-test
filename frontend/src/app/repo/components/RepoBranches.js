@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 
-import Dropdown from '../static_elements/Dropdown';
+import Dropdown from '../../static_elements/Dropdown';
 
-import bridge from '../../service/github_bridge';
+import bridge from '../../../service/github_bridge';
 
 class RepoBranches extends Component {
 
