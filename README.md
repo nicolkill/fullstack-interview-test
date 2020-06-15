@@ -1,7 +1,5 @@
 # fullstack-interview-test
 
-otro cambio inutil
-
 ## Requerimientos
 
 Para funcionar ambos nececitan tener instalada la herramienta **Make**
