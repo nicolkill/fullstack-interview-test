@@ -78,10 +78,13 @@ const openPullRequest = async (user, repo, {title, body, head, base}) => {
   return data.data;
 };
 
-const mergePullRequest = async (user, repo, number) => {
+const mergePullRequest = async (user, repo, number, id) => {
   const data = await instance.request({
     url: `${user}/${repo}/pull_requests/${number}`,
     method: 'put',
+    data: {
+      id,
+    },
   });
 
   return data.data;

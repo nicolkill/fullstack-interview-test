@@ -68,8 +68,14 @@ class RepoPullRequests extends Component {
                   </span>
                   <p>
                     #{pr.number} abierto {moment(pr.created_at).fromNow()} por {pr.user.login}
-                    <br/><br/>
-                    <a className="waves-effect waves-light grey darken-4 btn-small" href="!#" onClick={this.handleRepoClose.bind(this, pr.number)}>Cerrar</a>
+                    <br/>
+                    <strong>{pr.base.ref}</strong> <i className="material-icons black-text tiny">keyboard_backspace</i> <strong>{pr.head.ref}</strong>
+                    {pr.state == 'open' &&
+                      <div>
+                        <br/>
+                        <a className="waves-effect waves-light grey darken-4 btn-small" href="!#" onClick={this.handleRepoClose.bind(this, pr.number)}>Cerrar</a>
+                      </div>
+                    }
                   </p>
                 </li>
               ))}

@@ -61,7 +61,7 @@ class RepoCreatePullRequest extends Component {
       const {user, repo} = this.props.match.params;
 
       const res = await bridge.openPullRequest(user, repo, this.state);
-      await bridge.mergePullRequest(user, repo, res.data.number);
+      await bridge.mergePullRequest(user, repo, res.data.number, res.data.id);
 
       this.props.history.push(`/${user}/${repo}/pull_requests`);
     } catch (err) {

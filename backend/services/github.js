@@ -13,11 +13,13 @@ const instance = axios.create({
 
 const dataFilters = {
   owner: owner => ({
+    id: owner.id,
     login: owner.login,
     avatar_url: owner.avatar_url,
     html_url: owner.html_url,
   }),
   repo: repo => ({
+    id: repo.id,
     full_name: repo.full_name,
     owner: dataFilters.owner(repo.owner),
     html_url: repo.html_url,
@@ -53,6 +55,7 @@ const dataFilters = {
     repo: dataFilters.repo(target.repo),
   }),
   pullRequest: pullRequest => ({
+    id: pullRequest.id,
     html_url: pullRequest.html_url,
     number: pullRequest.number,
     state: pullRequest.state,
@@ -120,6 +123,9 @@ const getPullRequests = async (user, repo) => {
   const data = await instance.request({
     url: `repos/${user}/${repo}/pulls`,
     method: 'get',
+    params: {
+      state: 'all',
+    },
   });
 
   return data.data.map(dataFilters.pullRequest);

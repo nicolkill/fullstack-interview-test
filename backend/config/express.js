@@ -4,69 +4,69 @@ const bodyParser = require('body-parser');
 
 const Router = require('./router');
 
-const app = express();
+module.exports = () => {
+  const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
+  app.use(cors());
+  app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  const now = Date.now();
+  app.use((req, res, next) => {
+    const now = Date.now();
 
-  const chunks = [];
-  const oldWrite = res.write;
-  const oldEnd = res.end;
+    const chunks = [];
+    const oldWrite = res.write;
+    const oldEnd = res.end;
 
-  res.write = function (chunk) {
-    chunks.push(chunk);
-
-    return oldWrite.apply(res, arguments);
-  };
-
-  res.end = function (chunk) {
-    if (chunk) {
+    res.write = function (chunk) {
       chunks.push(chunk);
-    }
 
-    let body = '{}';
-    const contentType = res.getHeader('content-type');
-    if (contentType && contentType.indexOf('application/json') >= 0 && chunks.length > 0) {
-      body = Buffer.isBuffer(chunks[0]) ? Buffer.concat(chunks).toString('utf8') : chunks[0];
-    }
+      return oldWrite.apply(res, arguments);
+    };
 
-    try {
-      body = JSON.parse(body);
-    } catch (error) {
-      console.log({
-        body,
-        error: error.message,
-        stack: error.stack,
-      });
-      body = {};
-    }
+    res.end = function (chunk) {
+      if (chunk) {
+        chunks.push(chunk);
+      }
 
-    if (process.env.NODE_ENV != 'test') {
-      console.log({
-        method: req.method,
-        path: req.path,
-        status: res.statusCode,
-        duration: (Date.now() - now) / 1000,
-        request: req.body,
-        response: body,
-      });
-    }
+      let body = '{}';
+      const contentType = res.getHeader('content-type');
+      if (contentType && contentType.indexOf('application/json') >= 0 && chunks.length > 0) {
+        body = Buffer.isBuffer(chunks[0]) ? Buffer.concat(chunks).toString('utf8') : chunks[0];
+      }
 
-    return oldEnd.apply(res, arguments);
-  };
+      try {
+        body = JSON.parse(body);
+      } catch (error) {
+        console.log({
+          body,
+          error: error.message,
+          stack: error.stack,
+        });
+        body = {};
+      }
 
-  next()
-});
+      if (process.env.NODE_ENV != 'test') {
+        console.log({
+          method: req.method,
+          path: req.path,
+          status: res.statusCode,
+          duration: (Date.now() - now) / 1000,
+          request: req.body,
+          response: body,
+        });
+      }
 
-const router = Router();
+      return oldEnd.apply(res, arguments);
+    };
 
-require('../app/repo/repo.route').route(router);
+    next()
+  });
 
-app.use('/', router);
+  const router = Router();
 
-module.exports = {
-  app,
+  require('../app/repo/repo.route').route(router);
+
+  app.use('/', router);
+
+  return app;
 };

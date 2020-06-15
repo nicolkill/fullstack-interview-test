@@ -5,6 +5,8 @@ services:
     image: nicolkill/fullstack-interview-test:latest
     ports:
       - 4000:4000
+    depends_on:
+      - mongo
     volumes:
       - ./backend:/app
     networks:
@@ -15,6 +17,22 @@ services:
       NODE_ENV: development
 
       GITHUB_OAUTH_TOKEN: a22bdce924d3ec3772d2265702036d18d18e6f59
+
+      # Mongodb configuration
+      MONGODB_HOST: mongo:27017
+      MONGODB_OPTIONS: authSource=admin
+      MONGODB_DATABASE: mongo
+      MONGODB_USER: mongo
+      MONGODB_PASSWORD: mongopass
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: mongo
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongopass
 
 networks:
   proxy:
